@@ -1,0 +1,530 @@
+:root {
+  --background-color: #323031;
+  --background-color-lighter: #918d8f;
+
+  --cell-border: #f6db79;
+  --grid-interior: #f6db7932;
+
+  --snake-body: #db7093;
+  --spot-color: #98fb98;
+
+  --font-color: #d3d6d9;
+
+  --border-radius: 1rem;
+  --border-radius-soft: 5px;
+  --settings-pane-width: 300px;
+  --settings-pane-transition-speed: 700ms;
+
+  --bit-border: 2px 0 var(--cell-border), -2px 0 var(--cell-border), 0 2px var(--cell-border), 0 -2px var(--cell-border), 4px 0 var(--cell-border), -4px 0 var(--cell-border), 0 4px var(--cell-border),
+    0 -4px var(--cell-border);
+
+  --bit-border-hover: 2px 0 var(--cell-border), -2px 0 var(--cell-border), 0 2px var(--cell-border), 0 -2px var(--cell-border), 4px 0 var(--cell-border), -4px 0 var(--cell-border),
+    0 4px var(--cell-border), 0 -4px var(--cell-border), inset -2px 0 var(--background-color-lighter), inset 0 -2px var(--background-color-lighter);
+
+  --bit-border-2: 16px 0 var(--background-color), -16px 0 var(--background-color), 0 -16px var(--background-color), 0 16px var(--background-color), 4px 0 0 8px var(--background-color),
+    -4px 0 0 8px var(--background-color), 0 -4px 0 8px var(--background-color), 0 4px 0 8px var(--background-color), 20px 0 var(--cell-border), -20px 0 var(--cell-border), 0 -20px var(--cell-border),
+    0 20px var(--cell-border), 0 0 0 12px var(--cell-border), 0 8px 0 8px var(--cell-border), 0 -8px 0 8px var(--cell-border), 8px 0 0 8px var(--cell-border), -8px 0 0 8px var(--cell-border);
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Sabo-Filled;
+  color: var(--font-color);
+  background-color: var(--background-color);
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.content {
+  height: 100vh;
+  display: grid;
+  grid-template-areas: "a b";
+  grid-template-columns: 20% 80%;
+
+  font-size: 2rem;
+}
+
+.game-controls {
+  grid-area: a;
+  margin: auto;
+
+  box-shadow: var(--bit-border);
+  height: 80%;
+  width: 80%;
+
+  padding: 1rem 2rem;
+  text-align: center;
+  position: relative;
+
+  display: grid;
+  grid-template-areas:
+    "highscore"
+    "score"
+    "fruits"
+    "startgame";
+}
+
+.highscore {
+  grid-area: highscore;
+}
+
+.score {
+  grid-area: score;
+}
+
+.fruits {
+  grid-area: fruits;
+}
+
+.startgame {
+  grid-area: startgame;
+}
+
+.label {
+  font-size: 1rem;
+}
+.game-wrapper {
+  display: flex;
+  flex-direction: column;
+  grid-area: b;
+
+  position: relative;
+  margin: auto;
+}
+
+.paused {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  color: black;
+  font-size: 4rem;
+
+  border-radius: var(--border-radius);
+  border: 3px solid black;
+
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.6);
+}
+.btn {
+  /* border: 0; */
+  /* box-shadow: var(--bit-border-2); */
+  border: 2px solid var(--cell-border);
+  background-color: var(--background-color);
+  color: var(--font-color);
+  padding: 16px;
+  font-family: Sabo-Filled;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.btn.cancel {
+  filter: hue-rotate(180deg);
+}
+/* SNAKE STUFF */
+.snake-body::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: var(--snake-body);
+}
+
+.spot {
+  background: var(--spot-color);
+  position: absolute;
+  z-index: 1;
+}
+
+.spot::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin-top: -2px;
+  margin-bottom: -2px;
+  border: 2px solid var(--spot-color);
+  background: var(--spot-color);
+}
+
+.spot::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin-left: -2px;
+  margin-right: -2px;
+  border: 2px solid var(--spot-color);
+  background: var(--spot-color);
+}
+
+/* FRUIT */
+.fruit::after {
+  position: absolute;
+  content: "Z";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: palegreen;
+
+  font-family: Craft;
+  text-align: center;
+
+  font-size: 1.5rem;
+  animation: wobble 800ms infinite linear;
+}
+
+.settings-pane {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 3;
+
+  padding: 1.25em 1em;
+  text-align: center;
+
+  border-radius: var(--border-radius) 0px 0px var(--border-radius);
+  border-width: 3px 0px 3px 3px;
+  border-style: solid;
+  border-color: var(--cell-border);
+
+  background-color: var(--background-color);
+  width: var(--settings-pane-width);
+
+  transform: translate(var(--settings-pane-width), -50%);
+  transition: transform var(--settings-pane-transition-speed) ease-in-out;
+}
+
+.settings-pane.visible {
+  transform: translate(0px, -50%);
+}
+
+.settings-toggle {
+  border-radius: var(--border-radius) 0px 0px var(--border-radius);
+  border-width: 3px 0px 3px 3px;
+  border-style: solid;
+  border-color: var(--cell-border);
+  background-color: var(--background-color);
+
+  font-size: 1.5rem;
+  padding: 1em 0.5em;
+
+  position: absolute;
+  right: 0;
+  z-index: 3;
+  cursor: pointer;
+
+  top: 50%;
+  transform: translate(calc(-1 * var(--settings-pane-width)), -50%);
+  transition: transform var(--settings-pane-transition-speed) ease-in-out;
+}
+
+.settings-toggle.visible {
+  transform: translate(calc(-1 * var(--settings-pane-width)), -50%);
+}
+
+.settings-toggle > * {
+  transition: transform var(--settings-pane-transition-speed) ease-in-out;
+}
+.settings-toggle.visible > * {
+  transform: rotate(180deg);
+}
+
+.settings-pane label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.settings-pane hr {
+  border: 1px solid lightgray;
+  opacity: 0.1;
+  margin: 1em 0;
+}
+
+.settings-pane .heading {
+  font-size: 1.5rem;
+  margin-bottom: 2em;
+  font-weight: bolder;
+  position: relative;
+  overflow: hidden;
+}
+
+.settings-controls .control {
+  display: grid;
+  grid-template-areas: "label ctrl1 ctrl2";
+  grid-template-columns: 40% 20% 20%;
+  align-items: center;
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+.color-picker {
+  width: 100%;
+}
+
+.ctrl-label {
+  grid-area: label;
+}
+
+.btn .ctrl1 {
+  grid-area: ctrl1;
+}
+
+.btn .ctrl2 {
+  grid-area: ctrl2;
+}
+@keyframes wobble {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* GRID STUFF */
+.cell {
+  height: 40px;
+  width: 40px;
+  border: 1px dashed var(--grid-interior);
+  overflow: hidden;
+  position: relative;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.row:first-child > .cell {
+  border-top: 3px solid var(--cell-border);
+}
+.row:last-child > .cell {
+  border-bottom: 3px solid var(--cell-border);
+}
+.cell:first-child {
+  border-left: 3px solid var(--cell-border);
+}
+.cell:last-child {
+  border-right: 3px solid var(--cell-border);
+}
+
+/* Top Left */
+.row:first-child .cell:first-child {
+  border-radius: var(--border-radius) 0px 0px 0px;
+}
+/* Top Right */
+.row:first-child .cell:last-child {
+  border-radius: 0px var(--border-radius) 0px 0px;
+}
+/* Bottom Left*/
+.last-row .cell:first-child {
+  border-radius: 0px 0px 0px var(--border-radius);
+}
+/* Bottom Right */
+.last-row .cell:last-child {
+  border-radius: 0px 0px var(--border-radius) 0px;
+}
+
+/* Range Input Styling */
+input[type="range"] {
+  height: 12px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+input[type="range"]:focus {
+  outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: var(--background-color-lighter);
+  border-radius: 0px;
+  border: 1px solid var(--background-color);
+}
+input[type="range"]::-webkit-slider-thumb {
+  height: 30px;
+  width: 16px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -10px;
+  position: relative;
+  background-image: url("/assets/thumb.png");
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: var(--font-color);
+}
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: var(--background-color-lighter);
+  border: 1px solid var(--background-color-lighter);
+}
+input[type="range"]::-moz-range-thumb {
+  border: 1px solid var(--background-color);
+  height: 30px;
+  width: 16px;
+  cursor: pointer;
+}
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+}
+input[type="range"]::-ms-fill-lower {
+  background: #3071a9;
+  border: 1px solid var(--background-color);
+  border-radius: 0px;
+}
+input[type="range"]::-ms-fill-upper {
+  background: #3071a9;
+  border: 1px solid var(--background-color);
+  border-radius: 0px;
+}
+input[type="range"]::-ms-thumb {
+  margin-top: 1px;
+  border: 1px solid var(--background-color);
+  height: 30px;
+  width: 16px;
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: sticky;
+
+  min-width: 30vw;
+  min-height: 60vh;
+  border-radius: var(--border-radius-soft);
+  background: var(--background-color);
+  color: var(--font-color);
+  padding: 2em;
+
+  z-index: 100;
+
+  -webkit-box-shadow: 10px 10px 14px 5px rgba(30, 30, 30, 0.49);
+  box-shadow: 10px 10px 14px 5px rgba(30, 30, 30, 0.49);
+}
+
+.modal > * {
+  margin-bottom: 0.5em;
+}
+
+.modal .title {
+  font-size: 3em;
+  text-align: center;
+}
+
+.modal .subtitle {
+  font-size: 1em;
+  text-align: center;
+}
+
+.modal .key-bind {
+  background-color: var(--font-color);
+  flex-grow: 1;
+  width: 80%;
+  height: 40%;
+}
+
+.modal .buttons {
+  width: 80%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.swal2-actions {
+  font-family: PressStart2P !important;
+  font-weight: 400 !important;
+}
+@media screen and (max-width: 1920px) {
+  .cell {
+    height: 25px;
+    width: 25px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .content {
+    grid-template-areas:
+      "a"
+      "b";
+    grid-template-columns: unset;
+    grid-template-rows: auto 90%;
+    justify-content: center;
+  }
+
+  .game-controls {
+    max-width: 100%;
+    height: 100%;
+    grid-template-areas:
+      "highscore score fruits"
+      "startgame startgame startgame";
+    grid-template-columns: 33% 33% 33%;
+  }
+
+  .cell {
+    height: 20px;
+    width: 20px;
+  }
+}

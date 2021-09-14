@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta Content-type="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./styles/newstyle.css" />
+    <link rel="stylesheet" href="./styles/classes.css" />
+    <link rel="stylesheet" href="./styles/fonts.css" />
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+
+    <script src="https://kit.fontawesome.com/9621b5c59b.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Palette+Mosaic&family=Yomogi&display=swap" rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="./scripts/GameGeneration.js"></script>
+    <script src="./scripts/Snake.js"></script>
+    <script src="./scripts/LinkedList.js"></script>
+    <script src="./scripts/UIControllerObject.js"></script>
+    <script src="./scripts/AudioController.js"></script>
+    <script src="./scripts/CookieController.js"></script>
+    <script src="./scripts/Helper.js"></script>
+    <title>Snake</title>
+  </head>
+  <body>
+    <div class="settings-pane">
+      <div class="settings-toggle" onclick="ui.toggleSettings()">
+        <div class="fas fa-chevron-left"></div>
+      </div>
+      <div class="heading">Settings</div>
+      <div class="section">
+        <label for="backgroundMusicVolume" id="backgroundMusicLabel">Music Volume</label>
+        <input type="range" name="backgroundMusic" id="backgroundMusicVolume" min="1" max="100" step="1" value="25" oninput="ac.setMusicVol(this.value)" />
+        <hr />
+        <label for="effectsVolume">Effects</label>
+        <input type="range" name="effects" id="effectsVolume" min="1" max="100" step="1" value="25" oninput="ac.setEffectsVol(this.val)" />
+      </div>
+      <div class="section">
+        <div class="settings-controls">
+          <div class="control up">
+            <div class="ctrl-label">UP</div>
+            <button class="btn ctrl1" onclick="recordKeybind('ua')"></button><button class="btn ctrl2" onclick="recordKeybind('ub')"></button>
+          </div>
+          <div class="control down">
+            <div class="ctrl-label">DOWN</div>
+            <button class="btn ctrl1" onclick="recordKeybind('da')"></button><button class="btn ctrl2" onclick="recordKeybind('db')"></button>
+          </div>
+          <div class="control left">
+            <div class="ctrl-label">LEFT</div>
+            <button class="btn ctrl1" onclick="recordKeybind('la')"></button><button class="btn ctrl2" onclick="recordKeybind('lb')"></button>
+          </div>
+          <div class="control right">
+            <div class="ctrl-label">RIGHT</div>
+            <button class="btn ctrl1" onclick="recordKeybind('ra')"></button><button class="btn ctrl2" onclick="recordKeybind('rb')"></button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <label for="snakeBodyColorSelector">Snake Body</label>
+        <input type="color" class="color-picker" name="snake-body-color-selector" id="snakeBodyColorSelector" value="#db7093" oninput="updateSnakeColor(this.value)" />
+      </div>
+      <div class="section">
+        <label for="snakeBodyColorSelector">Spot Color</label>
+        <input type="color" class="color-picker" name="spot-color-selector" id="spotColorSelector" value="#ffffff" oninput="updateSpotColor(this.value)" />
+      </div>
+    </div>
+    <div class="content">
+      <div class="game-controls">
+        <div id="highscore" class="highscore">
+          <div class="label">Highscore</div>
+          <div class="value">0</div>
+        </div>
+        <div id="score" class="score">
+          <div class="label">Score</div>
+          <div class="value">0</div>
+        </div>
+        <div id="fruits" class="fruits">
+          <div class="label">Fruits</div>
+          <div class="value">0</div>
+        </div>
+        <div class="startgame">
+          <button class="btn" onclick="startGame()">Start Game</button>
+        </div>
+      </div>
+      <div class="game-wrapper"></div>
+    </div>
+    <audio id="itemPickup" src="./assets/item-pickup.ogg"></audio>
+    <audio id="backgroundMusic" src="./assets/background-music.mp3"></audio>
+    <audio id="gameOverMusic" src="./assets/pwned.mp3"></audio>
+  </body>
+</html>

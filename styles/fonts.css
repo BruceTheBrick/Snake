@@ -1,0 +1,50 @@
+@font-face {
+  font-family: Lazer84;
+  src: url(/fonts/Lazer84.ttf);
+}
+
+@font-face {
+  font-family: Good-Times;
+  src: url(/fonts/good\ times\ rg.ttf);
+}
+
+@font-face {
+  font-family: Sabo-Regular;
+  src: url(./fonts/Sabo-Regular.otf);
+}
+
+@font-face {
+  font-family: Sabo-Filled;
+  src: url(./fonts/Sabo-Filled.otf);
+}
+
+@font-face {
+  font-family: Carosello-Regular;
+  src: url(./fonts/Carosello-Regular.otf);
+}
+
+@font-face {
+  font-family: Cd-Icons;
+  src: url(./fonts/CD-IconsPC.ttf);
+}
+
+@font-face {
+  font-family: Minecraft;
+  src: url(./fonts/Minecraft-10.woff);
+}
+
+@font-face {
+  font-family: Craft;
+  src: url(./fonts/Craft.woff);
+}
+
+@font-face {
+  font-family: Pixel-Icons;
+  src: url(./fonts/Pixel\ Icons\ Compilation.ttf);
+}
+
+
+@font-face{
+font-family: PressStart2P;
+src: url(./fonts/PressStart2P.ttf);
+}

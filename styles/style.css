@@ -1,0 +1,197 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  --color-primary: #e84855;
+  --color-secondary: #3185fc;
+
+  /* --color-background: #28965a; */
+  --color-background: #193927;
+
+  /* --snake-body: darkgreen; */
+  --snake-body: darkgreen;
+
+  --snake-head: #a18276;
+
+  --fruit-color: #ffad05;
+  --color-white: #fbf9ff;
+  --grid-color: #524040;
+  /* --grid-background: #193927; */
+  --grid-background: #28965a;
+
+  --space-base: 1rem;
+
+  --border-radius-soft: 1rem;
+
+  background-color: var(--color-background);
+  font-family: "Yomogi", cursive;
+}
+
+.content {
+  display: grid;
+  grid-template-areas: "a b";
+  grid-template-columns: 20% 80%;
+  gap: 4rem;
+  padding: 0 10rem;
+  max-height: 100vh;
+}
+
+.game-wrapper {
+  grid-area: b;
+  background-color: var(--grid-background);
+  border: 3px solid black;
+  border-radius: var(--border-radius-soft);
+  max-height: 100vh;
+  max-width: 90vmin;
+  /* margin: auto; */
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  max-width: 90vmin;
+  margin: auto;
+}
+
+.controls {
+  grid-area: a;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--grid-background);
+  max-height: 80%;
+  border-radius: var(--border-radius-soft);
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+}
+
+.controls > * {
+  margin-bottom: var(--space-base);
+}
+
+.cell {
+  flex-grow: 1;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.cell::after {
+  display: block;
+  content: "";
+  padding-bottom: 100%;
+  width: 100%;
+}
+
+.snake-body {
+  position: relative;
+  overflow: hidden;
+  background: var(--snake-body);
+}
+
+.snake-body::after {
+  /* border-radius: 20%; */
+}
+
+.snake-body--head {
+  /* border-radius: 0px 5px 5px 0px; */
+  background-color: var(--snake-head);
+}
+
+.spot {
+  background-color: limegreen;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.fruit::after {
+  display: block;
+  position: absolute;
+
+  content: "\f5d1";
+  padding-bottom: 100%;
+  width: 100%;
+  top: 50%;
+  -webkit-text-stroke: 2px rgb(0, 0, 0);
+
+  font-size: clamp(1vmin, 1.5vw, 110%);
+  line-height: 0;
+  text-align: center;
+  color: red;
+  z-index: 1;
+  animation: scaleIn 800ms, wobble 1s infinite;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.75);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes wobble {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.btn {
+  background-color: var(--color-primary);
+  padding: 0.5rem 2rem;
+  border-radius: 50px;
+  border: 2px solid var(--color-secondary);
+  color: white;
+  box-shadow: 2px 3px 5px 0px rgba(48, 42, 42, 0.99);
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.6;
+}
+
+.cell:first-child {
+  border-left: 3px solid black;
+}
+
+.cell:last-child {
+  border-right: 3px solid black;
+}
+
+.row:first-child > * {
+  border-top: 3px solid black;
+}
+
+.row:last-child > * {
+  border-bottom: 3px solid black;
+}
+
+@media screen and (max-width: 700px) {
+  .controls {
+    display: none;
+  }
+}
