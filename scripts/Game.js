@@ -112,7 +112,5 @@ class Game {
     }
   }
 
-  initComponents() {
-    console.log("test");
-  }
+  initComponents() {}
 }
