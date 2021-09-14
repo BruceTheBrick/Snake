@@ -112,5 +112,7 @@ class Game {
     }
   }
 
-  initComponents() {}
+  initComponents() {
+    console.log("test");
+  }
 }
