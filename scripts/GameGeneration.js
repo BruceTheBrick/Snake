@@ -8,6 +8,7 @@ let score = 0;
 let fruitsCollected = 0;
 let highscore = 0;
 let gameSpeed = 300;
+let isExecuting = false;
 
 let numRows = 25;
 let numCols = 25;
@@ -56,7 +57,8 @@ function initControllers() {
 }
 
 function startGame() {
-  if (!gameLoop) {
+  if (!isExecuting) {
+    isExecuting = true;
     ac.startBackgroundMusic();
     snake.startSnakeControls();
     gameLoop = setInterval(() => {
@@ -68,6 +70,7 @@ function startGame() {
 function stopGame() {
   clearInterval(gameLoop);
   gameLoop = null;
+  isExecuting = false;
 }
 
 function pauseGame() {
@@ -88,7 +91,8 @@ function restartGame() {
 
 function resetGame() {
   stopGame();
-  initSnake();
+  // initSnake();
+  snake = new Snake(numRows, numCols, cc.getControls());
   ui.drawFruit();
   gameSpeed = 300;
   score = 0;
@@ -136,6 +140,7 @@ function updateGameSpeed() {
   if (prevSpeed !== gameSpeed) {
     clearInterval(gameLoop);
     gameLoop = null;
+    isExecuting = false;
     startGame();
   }
 }
