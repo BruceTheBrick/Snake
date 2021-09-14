@@ -78,9 +78,11 @@ function pauseGame() {
 }
 
 function unpauseGame() {
-  gameLoop = setInterval(() => {
-    runGame();
-  }, gameSpeed);
+  if (isExecuting) {
+    gameLoop = setInterval(() => {
+      runGame();
+    }, gameSpeed);
+  }
 }
 
 function restartGame() {
