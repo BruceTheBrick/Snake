@@ -1,5 +1,6 @@
 let snake;
 let gameLoop;
+let isExecuting = false;
 let ui;
 let ac;
 let cc;
@@ -56,7 +57,8 @@ function initControllers() {
 }
 
 function startGame() {
-  if (!gameLoop) {
+  if (!isExecuting) {
+    isExecuting = true;
     ac.startBackgroundMusic();
     snake.startSnakeControls();
     gameLoop = setInterval(() => {
@@ -68,6 +70,7 @@ function startGame() {
 function stopGame() {
   clearInterval(gameLoop);
   gameLoop = null;
+  isExecuting = false;
 }
 
 function pauseGame() {
@@ -75,9 +78,11 @@ function pauseGame() {
 }
 
 function unpauseGame() {
-  gameLoop = setInterval(() => {
-    runGame();
-  }, gameSpeed);
+  if (isExecuting) {
+    gameLoop = setInterval(() => {
+      runGame();
+    }, gameSpeed);
+  }
 }
 
 function restartGame() {
@@ -136,6 +141,7 @@ function updateGameSpeed() {
   if (prevSpeed !== gameSpeed) {
     clearInterval(gameLoop);
     gameLoop = null;
+    isExecuting = false;
     startGame();
   }
 }
