@@ -33,29 +33,25 @@ class Snake {
 
   up() {
     if (this.nextDirection == null) {
-      if (this.direction !== Directions.DOWN)
-        this.nextDirection = Directions.UP;
+      if (this.direction !== Directions.DOWN) this.nextDirection = Directions.UP;
     }
   }
 
   down() {
     if (this.nextDirection == null) {
-      if (this.direction !== Directions.UP)
-        this.nextDirection = Directions.DOWN;
+      if (this.direction !== Directions.UP) this.nextDirection = Directions.DOWN;
     }
   }
 
   left() {
     if (this.nextDirection == null) {
-      if (this.direction !== Directions.RIGHT)
-        this.nextDirection = Directions.LEFT;
+      if (this.direction !== Directions.RIGHT) this.nextDirection = Directions.LEFT;
     }
   }
 
   right() {
     if (this.nextDirection == null) {
-      if (this.direction !== Directions.LEFT)
-        this.nextDirection = Directions.RIGHT;
+      if (this.direction !== Directions.LEFT) this.nextDirection = Directions.RIGHT;
     }
   }
 
@@ -115,11 +111,7 @@ class Snake {
   checkHeadPosition() {
     if (this.selfCollision()) {
       this.die();
-    } else if (
-      document
-        .getElementById(this.getHead().getId())
-        .classList.contains("fruit")
-    ) {
+    } else if (document.getElementById(this.getHead().getId()).classList.contains("fruit")) {
       this.eat();
     }
   }
@@ -159,31 +151,27 @@ class Snake {
     this.fruitEaten();
   }
 
-  startSnakeControls() {
+  start() {
     let func = function (e) {
       switch (e.key) {
         case this.controls.UP.A:
         case this.controls.UP.B:
-          console.log("UP");
-          snake.up();
+          this.up();
           break;
 
         case this.controls.DOWN.A:
         case this.controls.DOWN.B:
-          console.log("DOWN");
-          snake.down();
+          this.down();
           break;
 
         case this.controls.LEFT.A:
         case this.controls.LEFT.B:
-          console.log("LEFT");
-          snake.left();
+          this.left();
           break;
 
         case this.controls.RIGHT.A:
         case this.controls.RIGHT.B:
-          console.log("RIGHT");
-          snake.right();
+          this.right();
           break;
 
         case "spacebar":
@@ -238,16 +226,6 @@ class Snake {
 
   setControls(controls) {
     this.controls = JSON.parse(JSON.stringify(controls));
-  }
-
-  printSpots() {
-    let temp = this.getTail();
-    while (temp.hasNext()) {
-      console.log(temp);
-      console.log(temp.getSpots());
-      console.log("------");
-      temp = temp.getNext();
-    }
   }
 
   initBody() {

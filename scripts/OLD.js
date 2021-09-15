@@ -159,3 +159,13 @@
 //   cell.classList.add("fruit");
 //   return cell.id;
 // }
+
+// printSpots() {
+//   let temp = this.getTail();
+//   while (temp.hasNext()) {
+//     console.log(temp);
+//     console.log(temp.getSpots());
+//     console.log("------");
+//     temp = temp.getNext();
+//   }
+// }

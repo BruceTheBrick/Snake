@@ -53,7 +53,7 @@ class AudioController {
     this.itemPickup.volume = this.musicVol;
   }
 
-  async itemPickupSound() {
+  async pickup() {
     this.itemPickup.volume = this.effectsVol;
     this.itemPickup.currentTime = 0;
     this.itemPickup.play();

@@ -3,8 +3,6 @@ class UIController {
     this.numRows = numRows;
     this.numCols = numCols;
     this.spawnArea = 5;
-
-    this.initControlButtons();
   }
 
   //GRID----------------------------------------
@@ -26,13 +24,10 @@ class UIController {
   }
 
   //FRUIT----------------------------------------
-  drawFruit() {
-    let hX = snake.getHead().getX();
-    let hY = snake.getHead().getY();
-
+  drawFruit(hX, hY) {
     let randX, randY;
-
     this.removeFruits();
+
     do {
       randX = randInRange(Math.max(0, hX - this.spawnArea), Math.min(numCols - 1, hX + this.spawnArea));
       randY = randInRange(Math.max(0, hY - this.spawnArea), Math.min(numRows - 1, hY + this.spawnArea));
@@ -110,7 +105,7 @@ class UIController {
   }
 
   //POPUPS------------------------------------------------
-  async showSuccess() {
+  async showSuccess(context) {
     let res = await swal.fire({
       title: "Game complete!",
       text: "Congratulations, you win!",
@@ -120,13 +115,13 @@ class UIController {
       showCancelButton: true,
     });
     if (res.isConfirmed) {
-      restartGame();
+      context.restart();
     } else {
-      resetGame();
+      context.reset();
     }
   }
 
-  async showGameOver(score) {
+  async showGameOver(context, score) {
     let res = await swal.fire({
       title: "Game Over!",
       text: "You died. Your final score was " + score,
@@ -137,10 +132,10 @@ class UIController {
     });
 
     if (res.isConfirmed) {
-      restartGame();
+      context.restart();
     } else {
-      ac.stopMusic();
-      resetGame();
+      context.audioController.stopMusic();
+      context.reset();
     }
   }
 
@@ -160,7 +155,7 @@ class UIController {
     return cell && !cell.classList.contains("fruit") && !cell.classList.contains("snake-body");
   }
 
-  toggleSettings() {
+  toggleSettings(context) {
     let toggle = document.querySelector(".settings-toggle");
     let pane = document.querySelector(".settings-pane");
 
@@ -168,11 +163,11 @@ class UIController {
     pane.classList.toggle("visible");
 
     if (toggle.classList.contains("visible")) {
-      pauseGame();
+      context.pause();
       this.showPaused();
     } else {
       this.removePaused();
-      unpauseGame();
+      context.resume();
     }
   }
 
@@ -190,7 +185,7 @@ class UIController {
     document.querySelector(".paused").remove();
   }
 
-  openModal(directionId) {
+  openModal(context, directionId) {
     let modalBackdrop = document.createElement("div");
     let modal = document.createElement("div");
     let title = document.createElement("div");
@@ -213,15 +208,20 @@ class UIController {
     cancelBtn.innerHTML = "Cancel";
     title.innerHTML = "Rebind Controls";
     subtitle.innerHTML = "Click the box and then click the key you would like to bind.";
-    modalBackdrop.addEventListener("click", () => {
-      ui.closeModal();
-    });
+    modalBackdrop.addEventListener(
+      "click",
+      function () {
+        this.closeModal();
+      }.bind(this)
+    );
 
-    bindParent.addEventListener("click", (e) => {
-      ui.recordNextKeypress(directionId);
-
-      e.stopPropagation();
-    });
+    bindParent.addEventListener(
+      "click",
+      function (e) {
+        context.recordNextKeypress(directionId);
+        e.stopPropagation();
+      }.bind(this)
+    );
     buttons.appendChild(confirmBtn);
     buttons.appendChild(cancelBtn);
 
@@ -238,19 +238,7 @@ class UIController {
     document.body.removeChild(document.querySelector(".modal-backdrop"));
   }
 
-  recordNextKeypress(directionId) {
-    let func = function (e) {
-      cc.updateControl(directionId, e.key);
-      snake.setControls(cc.getControls());
-      ui.closeModal();
-      ui.initControlButtons();
-      document.removeEventListener("keydown", func);
-    };
-    document.addEventListener("keydown", func);
-  }
-
-  initControlButtons() {
-    let ctrls = cc.getControls();
+  initControlButtons(ctrls) {
     let upa = document.querySelector(".up .ctrl1");
     let upb = document.querySelector(".up .ctrl2");
 
@@ -263,25 +251,25 @@ class UIController {
     let righta = document.querySelector(".right .ctrl1");
     let rightb = document.querySelector(".right .ctrl2");
 
-    upa.innerHTML = this.getControlChar(ctrls.UP.A);
-    upb.innerHTML = this.getControlChar(ctrls.UP.B);
+    upa.innerHTML = this.getControlChar(ctrls?.UP?.A);
+    upb.innerHTML = this.getControlChar(ctrls?.UP?.B);
 
-    downa.innerHTML = this.getControlChar(ctrls.DOWN.A);
-    downb.innerHTML = this.getControlChar(ctrls.DOWN.B);
+    downa.innerHTML = this.getControlChar(ctrls?.DOWN?.A);
+    downb.innerHTML = this.getControlChar(ctrls?.DOWN?.B);
 
-    lefta.innerHTML = this.getControlChar(ctrls.LEFT.A);
-    leftb.innerHTML = this.getControlChar(ctrls.LEFT.B);
+    lefta.innerHTML = this.getControlChar(ctrls?.LEFT?.A);
+    leftb.innerHTML = this.getControlChar(ctrls?.LEFT?.B);
 
-    righta.innerHTML = this.getControlChar(ctrls.RIGHT.A);
-    rightb.innerHTML = this.getControlChar(ctrls.RIGHT.B);
+    righta.innerHTML = this.getControlChar(ctrls?.RIGHT?.A);
+    rightb.innerHTML = this.getControlChar(ctrls?.RIGHT?.B);
   }
 
   getControlChar(control) {
-    return control.length <= 1 ? control : this.getUnicodeArrow(control);
+    return control?.length <= 1 ? control : this.getUnicodeArrow(control);
   }
 
   getUnicodeArrow(input) {
-    switch (input.toLowerCase()) {
+    switch (input?.toLowerCase()) {
       case "arrowup": {
         return "&#8593;";
       }

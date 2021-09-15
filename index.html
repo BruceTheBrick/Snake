@@ -16,7 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Palette+Mosaic&family=Yomogi&display=swap" rel="stylesheet" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="./scripts/GameGeneration.js"></script>
+    <script src="./scripts/main.js"></script>
+    <script src="./scripts/Game.js"></script>
     <script src="./scripts/Snake.js"></script>
     <script src="./scripts/LinkedList.js"></script>
     <script src="./scripts/UIControllerObject.js"></script>
@@ -27,7 +28,7 @@
   </head>
   <body>
     <div class="settings-pane">
-      <div class="settings-toggle" onclick="ui.toggleSettings()">
+      <div class="settings-toggle" onclick="game.toggleSettings()">
         <div class="fas fa-chevron-left"></div>
       </div>
       <div class="heading">Settings</div>
@@ -42,19 +43,19 @@
         <div class="settings-controls">
           <div class="control up">
             <div class="ctrl-label">UP</div>
-            <button class="btn ctrl1" onclick="recordKeybind('ua')"></button><button class="btn ctrl2" onclick="recordKeybind('ub')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('ua')"></button><button class="btn ctrl2" onclick="game.recordKeybind('ub')"></button>
           </div>
           <div class="control down">
             <div class="ctrl-label">DOWN</div>
-            <button class="btn ctrl1" onclick="recordKeybind('da')"></button><button class="btn ctrl2" onclick="recordKeybind('db')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('da')"></button><button class="btn ctrl2" onclick="game.recordKeybind('db')"></button>
           </div>
           <div class="control left">
             <div class="ctrl-label">LEFT</div>
-            <button class="btn ctrl1" onclick="recordKeybind('la')"></button><button class="btn ctrl2" onclick="recordKeybind('lb')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('la')"></button><button class="btn ctrl2" onclick="game.recordKeybind('lb')"></button>
           </div>
           <div class="control right">
             <div class="ctrl-label">RIGHT</div>
-            <button class="btn ctrl1" onclick="recordKeybind('ra')"></button><button class="btn ctrl2" onclick="recordKeybind('rb')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('ra')"></button><button class="btn ctrl2" onclick="game.recordKeybind('rb')"></button>
           </div>
         </div>
       </div>
