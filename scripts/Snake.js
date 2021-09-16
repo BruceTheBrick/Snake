@@ -111,7 +111,7 @@ class Snake {
   checkHeadPosition() {
     if (this.selfCollision()) {
       this.die();
-    } else if (document.getElementById(this.getHead().getId()).classList.contains("fruit")) {
+    } else if (document.getElementById(this.getHead().getId()).classList.contains("pickup")) {
       this.eat();
     }
   }

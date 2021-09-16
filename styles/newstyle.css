@@ -183,20 +183,30 @@ body {
 }
 
 /* FRUIT */
-.fruit::after {
+
+.pickup::after {
   position: absolute;
-  content: "Z";
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  color: palegreen;
-
-  font-family: Craft;
-  text-align: center;
 
   font-size: 1.5rem;
   animation: wobble 800ms infinite linear;
+}
+
+.apple::after {
+  color: palegreen;
+  content: "Z";
+  font-family: Craft;
+  text-align: center;
+}
+
+.steak::after {
+  color: #f28282;
+  content: "X";
+  font-family: Craft;
+  text-align: center;
 }
 
 .settings-pane {

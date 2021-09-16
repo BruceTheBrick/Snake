@@ -1,6 +1,7 @@
 class CookieController {
   constructor() {
     this.initControls();
+    this.initAudio();
   }
 
   //CONTROLS-----------------------------
@@ -27,6 +28,15 @@ class CookieController {
           },
         })
       );
+    }
+  }
+
+  initAudio() {
+    if (!localStorage.getItem("musicVol")) {
+      localStorage.setItem("musicVol", 25);
+    }
+    if (!localStorage.getItem("effectsVol")) {
+      localStorage.setItem("effectsVol", 25);
     }
   }
 
@@ -77,7 +87,7 @@ class CookieController {
 
   //SNAKE COLORING--------------
   setSnakeColor(color) {
-    localStorage.setItem("snakeBodyColor", color);
+    if (color) localStorage.setItem("snakeBodyColor", color);
   }
 
   getSnakeColor() {
@@ -85,7 +95,7 @@ class CookieController {
   }
 
   setSpotColor(color) {
-    localStorage.setItem("spotColor", color);
+    if (color) localStorage.setItem("spotColor", color);
   }
 
   getSpotColor() {

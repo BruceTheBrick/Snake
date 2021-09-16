@@ -3,8 +3,13 @@ class UIController {
     this.numRows = numRows;
     this.numCols = numCols;
     this.spawnArea = 5;
+
+    this.initPickups();
   }
 
+  initPickups() {
+    this.pickupTypes = ["apple", "steak"];
+  }
   //GRID----------------------------------------
   generateGridCells() {
     var parent = document.querySelector(".game-wrapper");
@@ -32,14 +37,28 @@ class UIController {
       randX = randInRange(Math.max(0, hX - this.spawnArea), Math.min(numCols - 1, hX + this.spawnArea));
       randY = randInRange(Math.max(0, hY - this.spawnArea), Math.min(numRows - 1, hY + this.spawnArea));
     } while (!this.cellIsEmpty(getIdFromXY(randX, randY)));
-    document.getElementById(getIdFromXY(randX, randY)).classList.add("fruit");
+    document.getElementById(getIdFromXY(randX, randY)).classList.add("pickup");
+    document.getElementById(getIdFromXY(randX, randY)).classList.add(this.getPickupType());
     this.spawnArea++;
   }
 
+  getPickupType() {
+    return this.pickupTypes[randInRange(0, this.pickupTypes.length)];
+  }
+
+  removePickupTypes() {
+    for (let i = 0; i < this.pickupTypes.length; i++) {
+      document.querySelectorAll("." + this.pickupTypes[i]).forEach((cell) => {
+        cell.classList.remove(this.pickupTypes[i]);
+      });
+    }
+  }
+
   removeFruits() {
-    document.querySelectorAll(".fruit").forEach((segment) => {
-      segment.classList.remove("fruit");
+    document.querySelectorAll(".pickup").forEach((segment) => {
+      segment.classList.remove("pickup");
     });
+    this.removePickupTypes();
   }
 
   //SNAKE-------------------------
@@ -106,14 +125,14 @@ class UIController {
 
   //SNAKE COLORING----------------------------------------
   setSnakeBodyColor(color) {
-    if (color) {
+    if (color !== null) {
       document.documentElement.style.setProperty("--snake-body", color);
       document.getElementById("snakeBodyColorSelector").value = color.trim();
     }
   }
 
   setSpotColor(color) {
-    if (color) {
+    if (color !== null) {
       document.documentElement.style.setProperty("--spot-color", color);
       document.getElementById("spotColorSelector").value = color.trim();
     }
@@ -149,7 +168,7 @@ class UIController {
     if (res.isConfirmed) {
       context.restart();
     } else {
-      context.audioController.stopMusic();
+      Game.audioController.stopMusic();
       context.reset();
     }
   }
@@ -167,7 +186,7 @@ class UIController {
   cellIsEmpty(id) {
     let cell = document.getElementById(id);
     if (id >= 625) console.error("Id out of Bounds: " + id);
-    return cell && !cell.classList.contains("fruit") && !cell.classList.contains("snake-body");
+    return cell && !cell.classList.contains("pickup") && !cell.classList.contains("snake-body");
   }
 
   toggleSettings(context) {
