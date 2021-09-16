@@ -11,7 +11,7 @@ class AudioController {
     this.gameOverMusic = document.getElementById("gameOverMusic");
     this.itemPickup = document.getElementById("itemPickup");
 
-    this.setMusicVol(25);
+    this.setMusicVolume(25);
     this.loopBackgroundMusic();
   }
 
@@ -35,12 +35,12 @@ class AudioController {
     return this.effectsVol;
   }
 
-  setMusicVol(musicVol) {
+  setMusicVolume(musicVol) {
     this.musicVol = (Math.log(parseInt(musicVol)) / 100) * 3;
     this.updateMusicVolumes();
   }
 
-  setEffectsVol(effectsVol) {
+  setEffectsVolume(effectsVol) {
     this.effectsVol = (Math.log(parseInt(effectsVol)) / 100) * 3;
     this.updateEffectsVolumes;
   }

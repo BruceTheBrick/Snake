@@ -22,8 +22,8 @@ class Game {
     this.numCols = numCols;
 
     this.initControllers(numRows, numCols);
-    this.snake = new Snake(numRows, numCols, this.cookieController.getControls());
-    this.updateSnakeAndSpotColors(this.cookieController.getSnakeColor(), this.cookieController.getSpotColor());
+    this.snake = new Snake(numRows, numCols, Game.cookieController.getControls());
+    this.updateSnakeAndSpotColors(Game.cookieController.getSnakeColor(), Game.cookieController.getSpotColor());
 
     this.initUI();
     this.listen__death();
@@ -31,17 +31,18 @@ class Game {
   }
 
   initUI() {
-    this.uiController.generateGridCells();
-    this.uiController.drawSnake(this.snake);
-    this.uiController.drawFruit(this.snake.getHead().getX(), this.snake.getHead().getY());
-    this.uiController.initControlButtons(this.cookieController.getControls());
-    this.uiController.updateHighscore(this.cookieController.getHighScore());
+    Game.uiController.generateGridCells();
+    Game.uiController.drawSnake(this.snake);
+    Game.uiController.drawFruit(this.snake.getHead().getX(), this.snake.getHead().getY());
+    Game.uiController.initControlButtons(Game.cookieController.getControls());
+    Game.uiController.initVolumeSliders(Game.cookieController.getMusicVolume(), Game.cookieController.getEffectsVolume());
+    Game.uiController.updateHighscore(Game.cookieController.getHighScore());
   }
 
   initControllers(numRows, numCols) {
-    this.audioController = new AudioController();
-    this.uiController = new UIController(numRows, numCols);
-    this.cookieController = new CookieController();
+    Game.audioController = new AudioController();
+    Game.uiController = new UIController(numRows, numCols);
+    Game.cookieController = new CookieController();
   }
 
   //Game States
@@ -49,7 +50,7 @@ class Game {
     if (this.state !== STATE.PAUSED && this.state !== STATE.PLAYING) {
       this.isStarted = true;
       this.setState(STATE.PLAYING);
-      this.audioController.startBackgroundMusic();
+      Game.audioController.startBackgroundMusic();
       this.snake.start();
       this.gameLoop = setInterval(() => {
         this.run();
@@ -66,7 +67,7 @@ class Game {
 
   run() {
     this.snake.move();
-    this.uiController.drawSnake(this.snake);
+    Game.uiController.drawSnake(this.snake);
   }
 
   pause() {
@@ -85,9 +86,9 @@ class Game {
     this.fruits = 0;
     this.isStarted = false;
 
-    this.snake = new Snake(this.numRows, this.numCols, this.cookieController.getControls());
-    this.uiController.updateScore(0);
-    this.uiController.updateFruitsCollected(0);
+    this.snake = new Snake(this.numRows, this.numCols, Game.cookieController.getControls());
+    Game.uiController.updateScore(0);
+    Game.uiController.updateFruitsCollected(0);
   }
 
   resume() {
@@ -102,19 +103,19 @@ class Game {
   }
 
   gameOver() {
-    this.uiController.showGameOver(this.score);
-    this.audioController.startGameOverMusic();
+    Game.uiController.showGameOver(this.score);
+    Game.audioController.startGameOverMusic();
     this.stop();
   }
 
   //Miscellaneous Functions--------------------------------------
   fruit() {
-    this.audioController.pickup();
+    Game.audioController.pickup();
 
     this.incrementScore(FRUIT_VALUE);
     this.incrementFruits(1);
 
-    this.uiController.drawFruit(this.snake.getHead().getX(), this.snake.getHead().getY());
+    Game.uiController.drawFruit(this.snake.getHead().getX(), this.snake.getHead().getY());
 
     this.updateGamespeed();
     this.checkNewHighScore();
@@ -135,21 +136,32 @@ class Game {
     }
   }
 
+  //AUDIO CONTROLS---------
+  setMusicVolume(volume) {
+    Game.audioController.setMusicVolume(volume);
+    Game.cookieController.setMusicVolume(volume);
+  }
+
+  setEffectsVolume(volume) {
+    Game.audioController.setEffectsVolume(volume);
+    Game.cookieController.setEffectsVolume(volume);
+  }
+
   //SCORING-------------
   incrementScore(increment) {
     this.score += increment;
-    this.uiController.updateScore(this.score);
+    Game.uiController.updateScore(this.score);
   }
 
   incrementFruits(increment) {
     this.fruits += increment;
-    this.uiController.updateFruitsCollected(this.fruits);
+    Game.uiController.updateFruitsCollected(this.fruits);
   }
 
   checkNewHighScore() {
     if (this.score > this.highScore) {
-      this.cookieController.setHighScore(this.score);
-      this.uiController.updateHighscore(this.score);
+      Game.cookieController.setHighScore(this.score);
+      Game.uiController.updateHighscore(this.score);
     }
   }
 
@@ -159,8 +171,8 @@ class Game {
       "died",
       function () {
         this.stop();
-        this.uiController.showGameOver(this, this.score);
-        this.audioController.startGameOverMusic();
+        Game.uiController.showGameOver(this, this.score);
+        Game.audioController.startGameOverMusic();
       }.bind(this)
     );
   }
@@ -175,13 +187,12 @@ class Game {
   }
 
   //UI STUFF
-
   recordKeybind(id) {
-    this.uiController.openModal(this, id);
+    Game.uiController.openModal(this, id);
   }
 
   toggleSettings() {
-    this.uiController.toggleSettings(this);
+    Game.uiController.toggleSettings(this);
   }
 
   updateSnakeAndSpotColors(snakeColor, spotColor) {
@@ -190,13 +201,13 @@ class Game {
   }
 
   updateSnakeColor(color) {
-    this.uiController.setSnakeBodyColor(color);
-    this.cookieController.setSnakeColor(color);
+    Game.uiController.setSnakeBodyColor(color);
+    Game.cookieController.setSnakeColor(color);
   }
 
   updateSpotColor(color) {
-    this.uiController.setSpotColor(color);
-    this.cookieController.setSpotColor(color);
+    Game.uiController.setSpotColor(color);
+    Game.cookieController.setSpotColor(color);
   }
 
   //SETTERS
@@ -206,12 +217,12 @@ class Game {
 
   //KEYBINDS
   recordNextKeypress() {
-    document.addEventListener("keydown", this.test);
+    document.addEventListener("keydown", this.validateInput);
   }
 
-  test(e) {
-    if (game.isValidKey(e.key)) {
-      game.uiController.displayKey(e.key);
+  validateInput(e) {
+    if (Game.isValidKey(e.key)) {
+      Game.uiController.displayKey(e.key);
     }
   }
 
@@ -219,10 +230,10 @@ class Game {
     let dId = document.querySelector(".modal").dataset.directionId;
     let key = document.querySelector(".key-bind").innerHTML;
 
-    this.cookieController.updateControl(dId, key);
-    this.snake.setControls(this.cookieController.getControls());
-    this.uiController.closeModal();
-    this.uiController.initControlButtons(this.cookieController.getControls());
+    Game.cookieController.updateControl(dId, key);
+    this.snake.setControls(Game.cookieController.getControls());
+    Game.uiController.closeModal();
+    Game.uiController.initControlButtons(Game.cookieController.getControls());
     document.removeEventListener("keydown", this.test);
   }
 

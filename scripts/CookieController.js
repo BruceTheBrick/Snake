@@ -91,4 +91,20 @@ class CookieController {
   getSpotColor() {
     return localStorage.getItem("spotColor");
   }
+
+  //AUDIO-----
+  setMusicVolume(volume) {
+    localStorage.setItem("musicVol", volume);
+  }
+
+  setEffectsVolume(volume) {
+    localStorage.setItem("effectsVol", volume);
+  }
+
+  getMusicVolume() {
+    return parseInt(localStorage.getItem("musicVol"));
+  }
+  getEffectsVolume() {
+    return parseInt(localStorage.getItem("effectsVol"));
+  }
 }

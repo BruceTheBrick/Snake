@@ -309,4 +309,17 @@ class UIController {
       }
     }
   }
+
+  initVolumeSliders(music, effects) {
+    this.setMusicVolume(music);
+    this.setEffectsVolume(effects);
+  }
+
+  setMusicVolume(volume) {
+    document.querySelector("#backgroundMusicVolume").value = volume;
+  }
+
+  setEffectsVolume(volume) {
+    document.querySelector("#effectsVolume").value = volume;
+  }
 }
