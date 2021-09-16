@@ -21,18 +21,27 @@ class Game {
     this.numRows = numRows;
     this.numCols = numCols;
 
-    this.audioController = new AudioController();
-    this.uiController = new UIController(numRows, numCols);
-    this.cookieController = new CookieController();
+    this.initControllers(numRows, numCols);
     this.snake = new Snake(numRows, numCols, this.cookieController.getControls());
+    this.updateSnakeAndSpotColors(this.cookieController.getSnakeColor(), this.cookieController.getSpotColor());
 
+    this.initUI();
+    this.listen__death();
+    this.listen__fruit();
+  }
+
+  initUI() {
     this.uiController.generateGridCells();
     this.uiController.drawSnake(this.snake);
     this.uiController.drawFruit(this.snake.getHead().getX(), this.snake.getHead().getY());
-    this.initControlUI();
+    this.uiController.initControlButtons(this.cookieController.getControls());
+    this.uiController.updateHighscore(this.cookieController.getHighScore());
+  }
 
-    this.listen__death();
-    this.listen__fruit();
+  initControllers(numRows, numCols) {
+    this.audioController = new AudioController();
+    this.uiController = new UIController(numRows, numCols);
+    this.cookieController = new CookieController();
   }
 
   //Game States
@@ -63,7 +72,6 @@ class Game {
   pause() {
     clearInterval(this.gameLoop);
     this.setState(STATE.PAUSED);
-    // this.gameLoop = null;
   }
 
   restart() {
@@ -167,9 +175,6 @@ class Game {
   }
 
   //UI STUFF
-  initControlUI() {
-    this.uiController.initControlButtons(this.cookieController.getControls());
-  }
 
   recordKeybind(id) {
     this.uiController.openModal(this, id);
@@ -179,22 +184,52 @@ class Game {
     this.uiController.toggleSettings(this);
   }
 
+  updateSnakeAndSpotColors(snakeColor, spotColor) {
+    this.updateSnakeColor(snakeColor);
+    this.updateSpotColor(spotColor);
+  }
+
+  updateSnakeColor(color) {
+    this.uiController.setSnakeBodyColor(color);
+    this.cookieController.setSnakeColor(color);
+  }
+
+  updateSpotColor(color) {
+    this.uiController.setSpotColor(color);
+    this.cookieController.setSpotColor(color);
+  }
+
   //SETTERS
   setState(state) {
-    console.log(state);
-    console.trace();
     this.state = state;
   }
 
   //KEYBINDS
-  recordNextKeypress(directionId) {
-    let func = function (e) {
-      this.cookieController.updateControl(directionId, e.key);
-      this.snake.setControls(this.cookieController.getControls());
-      this.uiController.closeModal();
-      this.uiController.initControlButtons(this.cookieController.getControls());
-      document.removeEventListener("keydown", func);
-    }.bind(this);
-    document.addEventListener("keydown", func);
+  recordNextKeypress() {
+    document.addEventListener("keydown", this.test);
+  }
+
+  test(e) {
+    if (game.isValidKey(e.key)) {
+      game.uiController.displayKey(e.key);
+    }
+  }
+
+  updateKeybind() {
+    let dId = document.querySelector(".modal").dataset.directionId;
+    let key = document.querySelector(".key-bind").innerHTML;
+
+    this.cookieController.updateControl(dId, key);
+    this.snake.setControls(this.cookieController.getControls());
+    this.uiController.closeModal();
+    this.uiController.initControlButtons(this.cookieController.getControls());
+    document.removeEventListener("keydown", this.test);
+  }
+
+  static isValidKey(key) {
+    let alphaNumeric = /^\w$/;
+    let arrows = /Arrow\w{2,5}/;
+    if (alphaNumeric.test(key) || arrows.test(key)) return true;
+    return false;
   }
 }

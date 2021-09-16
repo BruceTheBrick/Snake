@@ -104,6 +104,21 @@ class UIController {
     document.querySelector("#fruits .value").innerHTML = numFruits;
   }
 
+  //SNAKE COLORING----------------------------------------
+  setSnakeBodyColor(color) {
+    if (color) {
+      document.documentElement.style.setProperty("--snake-body", color);
+      document.getElementById("snakeBodyColorSelector").value = color.trim();
+    }
+  }
+
+  setSpotColor(color) {
+    if (color) {
+      document.documentElement.style.setProperty("--spot-color", color);
+      document.getElementById("spotColorSelector").value = color.trim();
+    }
+  }
+
   //POPUPS------------------------------------------------
   async showSuccess(context) {
     let res = await swal.fire({
@@ -151,7 +166,7 @@ class UIController {
   //MISC-----------------------------------------
   cellIsEmpty(id) {
     let cell = document.getElementById(id);
-    if (id >= 625) console.error("ID IS OUT OF BOUNDS " + id);
+    if (id >= 625) console.error("Id out of Bounds: " + id);
     return cell && !cell.classList.contains("fruit") && !cell.classList.contains("snake-body");
   }
 
@@ -204,6 +219,7 @@ class UIController {
     confirmBtn.classList = "btn confirm";
     cancelBtn.classList = "btn cancel";
 
+    modal.dataset.directionId = directionId;
     confirmBtn.innerHTML = "Confirm";
     cancelBtn.innerHTML = "Cancel";
     title.innerHTML = "Rebind Controls";
@@ -218,10 +234,15 @@ class UIController {
     bindParent.addEventListener(
       "click",
       function (e) {
-        context.recordNextKeypress(directionId);
+        context.recordNextKeypress();
         e.stopPropagation();
       }.bind(this)
     );
+
+    cancelBtn.onclick = this.closeModal;
+    confirmBtn.onclick = () => {
+      context.updateKeybind();
+    };
     buttons.appendChild(confirmBtn);
     buttons.appendChild(cancelBtn);
 
@@ -232,6 +253,10 @@ class UIController {
 
     modalBackdrop.appendChild(modal);
     document.body.appendChild(modalBackdrop);
+  }
+
+  displayKey(key) {
+    document.querySelector(".key-bind").innerHTML = this.getControlChar(key);
   }
 
   closeModal() {

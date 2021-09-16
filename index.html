@@ -43,29 +43,29 @@
         <div class="settings-controls">
           <div class="control up">
             <div class="ctrl-label">UP</div>
-            <button class="btn ctrl1" onclick="game.recordKeybind('ua')"></button><button class="btn ctrl2" onclick="game.recordKeybind('ub')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('ua')" data-direction="ua"></button><button class="btn ctrl2" onclick="game.recordKeybind('ub')" data-direction="ub"></button>
           </div>
           <div class="control down">
             <div class="ctrl-label">DOWN</div>
-            <button class="btn ctrl1" onclick="game.recordKeybind('da')"></button><button class="btn ctrl2" onclick="game.recordKeybind('db')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('da')" data-direction="da"></button><button class="btn ctrl2" onclick="game.recordKeybind('db')" data-direction="db"></button>
           </div>
           <div class="control left">
             <div class="ctrl-label">LEFT</div>
-            <button class="btn ctrl1" onclick="game.recordKeybind('la')"></button><button class="btn ctrl2" onclick="game.recordKeybind('lb')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('la')" data-direction="la"></button><button class="btn ctrl2" onclick="game.recordKeybind('lb')" data-direction="lb"></button>
           </div>
           <div class="control right">
             <div class="ctrl-label">RIGHT</div>
-            <button class="btn ctrl1" onclick="game.recordKeybind('ra')"></button><button class="btn ctrl2" onclick="game.recordKeybind('rb')"></button>
+            <button class="btn ctrl1" onclick="game.recordKeybind('ra')" data-direction="ra"></button><button class="btn ctrl2" onclick="game.recordKeybind('rb')" data-direction="rb"></button>
           </div>
         </div>
       </div>
       <div class="section">
         <label for="snakeBodyColorSelector">Snake Body</label>
-        <input type="color" class="color-picker" name="snake-body-color-selector" id="snakeBodyColorSelector" value="#db7093" oninput="updateSnakeColor(this.value)" />
+        <input type="color" class="color-picker" name="snake-body-color-selector" id="snakeBodyColorSelector" value="#db7093" oninput="game.updateSnakeColor(this.value)" />
       </div>
       <div class="section">
         <label for="snakeBodyColorSelector">Spot Color</label>
-        <input type="color" class="color-picker" name="spot-color-selector" id="spotColorSelector" value="#ffffff" oninput="updateSpotColor(this.value)" />
+        <input type="color" class="color-picker" name="spot-color-selector" id="spotColorSelector" value="#ffffff" oninput="game.updateSpotColor(this.value)" />
       </div>
     </div>
     <div class="content">
@@ -83,7 +83,7 @@
           <div class="value">0</div>
         </div>
         <div class="startgame">
-          <button class="btn" onclick="startGame()">Start Game</button>
+          <button class="btn" onclick="game.start()">Start Game</button>
         </div>
       </div>
       <div class="game-wrapper"></div>
