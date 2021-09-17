@@ -32,10 +32,12 @@ class Game {
 
   initUI() {
     Game.uiController.generateGridCells();
+    Game.uiController.setInvisibleSnake(Game.cookieController.getInvisibleSnake());
     Game.uiController.drawSnake(this.snake);
     Game.uiController.drawFruit(this.snake.getHead().getX(), this.snake.getHead().getY());
     Game.uiController.initControlButtons(Game.cookieController.getControls());
     Game.uiController.initVolumeSliders(Game.cookieController.getMusicVolume(), Game.cookieController.getEffectsVolume());
+    Game.uiController.initInvisibleSnakeCheck(Game.cookieController.getInvisibleSnake());
     Game.uiController.updateHighscore(Game.cookieController.getHighScore());
   }
 
@@ -208,6 +210,12 @@ class Game {
   updateSpotColor(color) {
     Game.uiController.setSpotColor(color);
     Game.cookieController.setSpotColor(color);
+  }
+
+  toggleInvisSnake(state) {
+    Game.uiController.setInvisibleSnake(state);
+    Game.uiController.drawSnake(this.snake);
+    Game.cookieController.setInvisibleSnake(state);
   }
 
   //SETTERS

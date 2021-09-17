@@ -3,12 +3,18 @@ class UIController {
     this.numRows = numRows;
     this.numCols = numCols;
     this.spawnArea = 5;
+    this.invisibleSnake;
 
     this.initPickups();
   }
 
   initPickups() {
     this.pickupTypes = ["apple", "steak"];
+  }
+
+  setInvisibleSnake(state) {
+    console.log("ui state" + state);
+    this.invisibleSnake = state;
   }
   //GRID----------------------------------------
   generateGridCells() {
@@ -70,10 +76,12 @@ class UIController {
       let cell = document.getElementById(temp.getId());
       cell.classList.add("snake-body");
       this.drawSpots(temp);
+      this.checkInvisSnake(cell);
       temp = temp.getNext();
     }
     document.getElementById(temp.getId()).classList.add("snake-body");
     document.getElementById(temp.getId()).classList.add("snake-body--head");
+    this.checkInvisSnake(document.getElementById(temp.getId()));
   }
 
   removeOldSnake() {
@@ -86,7 +94,14 @@ class UIController {
     document.querySelectorAll(".snake-body--tail").forEach((segment) => {
       segment.classList.remove("snake-body--tail");
     });
+    document.querySelectorAll(".invisible").forEach((segment) => {
+      segment.classList.remove("invisible");
+    });
     this.removeDots();
+  }
+
+  checkInvisSnake(cell) {
+    if (this.invisibleSnake) cell.classList.add("invisible");
   }
 
   drawSpots(node) {
@@ -306,6 +321,10 @@ class UIController {
 
     righta.innerHTML = this.getControlChar(ctrls?.RIGHT?.A);
     rightb.innerHTML = this.getControlChar(ctrls?.RIGHT?.B);
+  }
+
+  initInvisibleSnakeCheck(state) {
+    document.querySelector(".switchParent .switch input").checked = state;
   }
 
   getControlChar(control) {

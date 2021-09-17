@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./styles/newstyle.css" />
     <link rel="stylesheet" href="./styles/classes.css" />
     <link rel="stylesheet" href="./styles/fonts.css" />
+    <link rel="stylesheet" href="./styles/inputs.css" />
     <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
 
     <script src="https://kit.fontawesome.com/9621b5c59b.js" crossorigin="anonymous"></script>
@@ -66,6 +67,15 @@
       <div class="section">
         <label for="snakeBodyColorSelector">Spot Color</label>
         <input type="color" class="color-picker" name="spot-color-selector" id="spotColorSelector" value="#ffffff" oninput="game.updateSpotColor(this.value)" />
+      </div>
+      <div class="section">
+        <label for="invisSnake">Invisible Snake</label>
+        <div class="switchParent">
+          <label class="switch">
+            <input type="checkbox" onchange="game.toggleInvisSnake(this.checked)" />
+            <span class="slider round"></span>
+          </label>
+        </div>
       </div>
     </div>
     <div class="content">

@@ -2,6 +2,7 @@ class CookieController {
   constructor() {
     this.initControls();
     this.initAudio();
+    this.initInvisSnake();
   }
 
   //CONTROLS-----------------------------
@@ -38,6 +39,10 @@ class CookieController {
     if (!localStorage.getItem("effectsVol")) {
       localStorage.setItem("effectsVol", 25);
     }
+  }
+
+  initInvisSnake() {
+    if (!localStorage.getItem("invisibleSnake")) localStorage.setItem("invisibleSnake", false);
   }
 
   setControls(controls) {
@@ -100,6 +105,20 @@ class CookieController {
 
   getSpotColor() {
     return localStorage.getItem("spotColor");
+  }
+
+  setInvisibleSnake(state) {
+    localStorage.setItem("invisibleSnake", state);
+  }
+
+  getInvisibleSnake() {
+    return localStorage.getItem("invisibleSnake");
+  }
+
+  toggleInvisibleSnake() {
+    let state = localStorage.getItem("invisibleSnake");
+    localStorage.setItem("invisibleSnake", !state);
+    return !state;
   }
 
   //AUDIO-----
