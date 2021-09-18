@@ -228,6 +228,10 @@ class Game {
     document.addEventListener("keydown", this.validateInput);
   }
 
+  removeNextKeyPressListener() {
+    document.removeEventListener("keydown", this.validateInput);
+  }
+
   validateInput(e) {
     if (Game.isValidKey(e.key)) {
       Game.uiController.displayKey(e.key);
@@ -236,9 +240,9 @@ class Game {
 
   updateKeybind() {
     let dId = document.querySelector(".modal").dataset.directionId;
-    let key = document.querySelector(".key-bind").innerHTML;
+    let value = document.querySelector(".key-bind").innerHTML;
 
-    Game.cookieController.updateControl(dId, key);
+    Game.cookieController.updateControl(dId, this.getKeyFromValue(value));
     this.snake.setControls(Game.cookieController.getControls());
     Game.uiController.closeModal();
     Game.uiController.initControlButtons(Game.cookieController.getControls());
@@ -250,5 +254,27 @@ class Game {
     let arrows = /Arrow\w{2,5}/;
     if (alphaNumeric.test(key) || arrows.test(key)) return true;
     return false;
+  }
+
+  getKeyFromValue(value) {
+    switch (value) {
+      case "↑": {
+        return "ArrowUp";
+      }
+      case "↓": {
+        return "ArrowDown";
+      }
+
+      case "←": {
+        return "ArrowLeft";
+      }
+
+      case "→": {
+        return "ArrowRight";
+      }
+      default: {
+        return value;
+      }
+    }
   }
 }

@@ -3,17 +3,16 @@ class UIController {
     this.numRows = numRows;
     this.numCols = numCols;
     this.spawnArea = 5;
-    this.invisibleSnake;
+    this.invisibleSnake = false;
 
     this.initPickups();
   }
 
   initPickups() {
-    this.pickupTypes = ["apple", "steak"];
+    this.pickupTypes = ["apple", "steak", "cherries", "cake", "banana"];
   }
 
   setInvisibleSnake(state) {
-    console.log("ui state" + state);
     this.invisibleSnake = state;
   }
   //GRID----------------------------------------
@@ -71,7 +70,7 @@ class UIController {
   drawSnake(snake) {
     this.removeOldSnake();
     let temp = snake.getTail();
-    document.getElementById(temp.getId()).classList.add("snake-body");
+    // document.getElementById(temp.getId()).classList.add("snake-body");
     while (temp.hasNext()) {
       let cell = document.getElementById(temp.getId());
       cell.classList.add("snake-body");
@@ -290,10 +289,12 @@ class UIController {
   }
 
   displayKey(key) {
+    console.trace();
     document.querySelector(".key-bind").innerHTML = this.getControlChar(key);
   }
 
   closeModal() {
+    game.removeNextKeyPressListener();
     document.body.removeChild(document.querySelector(".modal-backdrop"));
   }
 
@@ -324,7 +325,9 @@ class UIController {
   }
 
   initInvisibleSnakeCheck(state) {
+    console.log(typeof state);
     document.querySelector(".switchParent .switch input").checked = state;
+    // document.querySelector(".switchParent .switch input").checked = false;
   }
 
   getControlChar(control) {
