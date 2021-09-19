@@ -13,6 +13,9 @@ function randomNumber(numCols, numRows) {
 function randInRange(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 Array.prototype.peek = function () {
   return this.length > 0 ? this[this.length - 1] : undefined;
 };

@@ -222,14 +222,19 @@ class UIController {
   showPaused() {
     let gameGrid = document.querySelector(".game-wrapper");
     let pause = document.createElement("div");
-    let text = document.createElement("p");
-    text.innerHTML = "Game Paused!";
+    pause.innerHTML = "Game Paused!";
     pause.classList.add("paused");
-    pause.appendChild(text);
     gameGrid.appendChild(pause);
   }
 
-  removePaused() {
+  async removePaused() {
+    let count = 3;
+    let div = document.querySelector(".paused");
+    while (count > 0) {
+      div.innerHTML = count;
+      await delay(600);
+      count--;
+    }
     document.querySelector(".paused").remove();
   }
 
