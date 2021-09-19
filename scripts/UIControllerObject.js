@@ -235,6 +235,8 @@ class UIController {
       await delay(600);
       count--;
     }
+    div.innerHTML = "Go!";
+    await delay(600);
     document.querySelector(".paused").remove();
   }
 
