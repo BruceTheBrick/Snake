@@ -112,7 +112,8 @@ class CookieController {
   }
 
   getInvisibleSnake() {
-    return localStorage.getItem("invisibleSnake");
+    console.trace();
+    return localStorage.getItem("invisibleSnake") === "true";
   }
 
   toggleInvisibleSnake() {

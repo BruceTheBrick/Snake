@@ -202,6 +202,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
+  text-align: center;
 
   font-size: 1.5rem;
   animation: wobble 800ms infinite linear;
@@ -211,14 +212,30 @@ body {
   color: palegreen;
   content: "Z";
   font-family: Craft;
-  text-align: center;
 }
 
 .steak::after {
   color: #f28282;
   content: "X";
   font-family: Craft;
-  text-align: center;
+}
+
+.cherries::after {
+  color: red;
+  content: "t";
+  font-family: Pixel-Icons;
+}
+
+.cake::after {
+  color: lightpink;
+  content: "h";
+  font-family: Aywadings;
+}
+
+.banana::after {
+  color: yellow;
+  content: "D";
+  font-family: Aywadings;
 }
 
 .settings-pane {
